@@ -1,0 +1,184 @@
+/* 
+    단일선택자
+    - 전체: * {}
+    - 태그: 태그명 {}
+    - 클래스: .클래스명 {}
+    - 아이디: #아이디명 {}
+*/
+
+/* * {
+    color: #220158;
+}
+
+li {
+    color: #ff0000;
+}
+
+.orange {
+    color: rgb(251, 149, 16);
+}
+
+div.orange {
+    color: rgb(138, 75, 2);
+}
+
+#orange {
+    color: #0000ff;
+} */
+
+/* 
+    여러 선택자를 동시에 지정
+    - , 를 이용해 여러 선택자에 동시 스타일 지정
+*/
+
+/* ul,
+p,
+.orange {
+    color: green;
+} */
+
+/* 
+    복합 형제 선택자
+    - 하위: A B
+    - 자식: A > B
+    - 인접형제: A + B
+    - 일반형제: A ~ B 
+*/
+
+/* 하위 선택자 */
+div .orange {
+    color: orange;
+}
+
+/* 자식 선택자 */
+ul > .orange {
+    color: red;
+}
+
+/* 인접 형제 선택자
+    A + B
+    조건1. A, B 같은 레벨
+    조건2. B가 A의 바로 뒤에 
+*/
+ul + .orange {
+    color: green;
+}
+
+/* 조건2에 위배되어 적용 x */
+ul + span.orange {
+    color: green;
+}
+
+/* 일반 형제 선택자
+    A ~ B
+    조건1. A, B 같은 레벨 
+    조건2. B는 A보다 뒤에 위치
+*/
+
+div.orange ~ span {
+    color: royalblue;
+}
+
+/* 조건2에 위배되어 적용x */
+div.orange ~ ul {
+    color: royalblue;
+}
+
+
+/* 
+    가상선택자
+    - E:hover: E 요소에 마우스가 올라가 있는 동안
+    - E:active: E 요소에 마우스를 클릭하는 동안 
+    - E:visited: E 요소가 링크일 때, 한 번 클릭해서 링크를 접속한 이력이 있을 때
+*/
+#google:hover {
+    font-weight: 700;
+    color: orangered;
+}
+
+#naver:active {
+    font-weight: 700;
+    color: palevioletred;
+}
+
+#daum:visited {
+    color: gray;
+}
+
+/* .fruits span:first-child {
+    color: red;
+} */
+
+/* p태그가 .fruits의 첫번째 자식이 
+아니므로 적용 X */
+/* .fruits p:first-child {
+    color: red;
+}
+
+.fruits h3:last-child {
+    color: red;
+}
+
+.fruits *:nth-child(2) {
+    color: green;
+} */
+
+/* 괄호안에 공식을 이용해서
+여러 개를 선택 가능 */
+/* .fruits *:nth-child(2n-1) {
+    color: green;
+} */
+
+.fruits *:not(span) {
+    color: blue;
+}
+
+.numbers {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+/* .numbers span:nth-child(odd) {
+    color: green;
+}
+
+.numbers span:nth-child(even) {
+    color: orange;
+} */
+
+/* 4와 7에만 파란색상이 되도록 만들기! */
+/* N: 0부터 시작하는 양의 정수  */
+.numbers span:nth-child(3n + 4) {
+    color: blue;
+}
+
+/* CSS 우선순위 */
+.test {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* 전체 선택자 */
+.test * {
+    color: gray;
+}
+
+/* 태그 선택자 > 전체 선택자 */
+/* !important >>>>> * */
+.test span {
+    color: blue !important;
+}
+
+/* 클래스 선택자 > 태그 선택자 */
+.test .num {
+    color: green;
+}
+
+/* 아이디 선택자 > 클래스 선택자 */
+.test #two {
+    color: purple;
+}
+
+
+
+
