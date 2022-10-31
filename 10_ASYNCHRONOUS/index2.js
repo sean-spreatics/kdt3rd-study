@@ -35,7 +35,6 @@ promise1(true) // true, false, 5>3
 // #2 Promise 사용법
 // index.js 에서 "콜백함수"를 이용해 동기처리한 것을
 // "promise"를 이용해 동기처리 해보자!!!
-/*
 function goMart() {
   console.log('마트에 가서 어떤 음료를 살지 고민한다.');
 }
@@ -74,7 +73,6 @@ goMart();
 pickDrink().then(pay);
 // reject 도 사용하려는 경우
 // pickDrink().then(pay).catch(nopay);
-*/
 
 // #3 Promise 체이닝
 // ex. 함수를 이용해 (4 + 3) * 2 - 1 = 13 연산을 해보자!
@@ -118,6 +116,7 @@ add(4, 3, function (x) {
 */
 
 // step2. 프로미스 체이닝 사용
+/*
 function add(n1, n2) {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
@@ -159,6 +158,7 @@ add(4, 3) // add(4, 3) -> resolve(7) - then(7)
   .then(function (result) {
     console.log('3: ', result); // 13
   });
+  */
 
 // *에러처리
 // add(4, 3) // add(4, 3) -> resolve(7) - then(7)
