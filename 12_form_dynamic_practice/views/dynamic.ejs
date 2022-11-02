@@ -101,9 +101,9 @@
     <h2>실습30. axios post 로그인</h2>
     <form name="login">
       <label for="userId">아이디</label>
-      <input type="text" id="userId" name="userId" /><br />
+      <input type="text" id="userId" name="userId" required /><br />
       <label for="userPw">패스워드</label>
-      <input type="password" id="userPw" name="userPw" /><br />
+      <input type="password" id="userPw" name="userPw" required /><br />
       <button type="button" onclick="clickLogin();">로그인</button>
     </form>
     <div class="login-result"></div>
@@ -144,29 +144,41 @@
           userPw: form.userPw.value,
         };
 
-        axios({
-          method: 'POST',
-          url: '/practice30',
-          data: data,
-        }).then(function (res) {
-          console.log(res);
-          console.log(res.data);
-          // res.data
-          // 로그인 성공; { userInfo: {userId: ??, userPw: ??}, isLogin: true }
-          // 로그인 실패; { isLogin: false }
+        console.log('1', form.userId.checkValidity());
+        console.log('2', form.userPw.checkValidity());
 
-          if (res.data.isLogin === true) {
-            // 로그인 성공
-            loginResult.textContent = `${res.data.userInfo.userId}님 환영합니다! 로그인 성공🎉`;
-            loginResult.classList.remove('error');
-            loginResult.classList.add('success');
-          } else {
-            // 로그인 실패
-            loginResult.textContent = '아이디 또는 패스워드 오류😂';
-            loginResult.classList.remove('success');
-            loginResult.classList.add('error');
-          }
-        });
+        if (
+          form.userId.checkValidity() === true &&
+          form.userPw.checkValidity() === true
+        ) {
+          // 입력값이 올바르면, axios 요청 시도
+          axios({
+            method: 'POST',
+            url: '/practice30',
+            data: data,
+          }).then(function (res) {
+            console.log(res);
+            console.log(res.data);
+            // res.data
+            // 로그인 성공; { userInfo: {userId: ??, userPw: ??}, isLogin: true }
+            // 로그인 실패; { isLogin: false }
+
+            if (res.data.isLogin === true) {
+              // 로그인 성공
+              loginResult.textContent = `${res.data.userInfo.userId}님 환영합니다! 로그인 성공🎉`;
+              loginResult.classList.remove('error');
+              loginResult.classList.add('success');
+            } else {
+              // 로그인 실패
+              loginResult.textContent = '아이디 또는 패스워드 오류😂';
+              loginResult.classList.remove('success');
+              loginResult.classList.add('error');
+            }
+          });
+        } else {
+          // 올바르지 않다면, axios 요청 시도x -> 경고 메세지
+          loginResult.textContent = '입력값을 모두 채워주세요!!!';
+        }
       }
     </script>
   </body>
