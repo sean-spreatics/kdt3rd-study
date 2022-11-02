@@ -70,6 +70,25 @@ app.post('/upload', uploadDeatil.single('userfile'), function (req, res) {
   res.send('Uploads!');
 });
 
+// 2. array(): 여러 파일을 하나의 input에 업로드할 때
+// array() -> req.files 객체에 파일 정보
+app.post('/upload/array', uploadDeatil.array('userfiles'), function (req, res) {
+  console.log(req.files); // [ {}, {}, {}, {} ] 형식으로 파일 정보 확인
+  console.log(req.body); // [Object: null prototype] { title: '과일들...' }
+  res.send('Uploaded Multiple!!!');
+});
+
+// 3. fields(): 여러 파일을 각각의 input에 업로드할 때
+app.post(
+  '/upload/fields',
+  uploadDeatil.fields([{ name: 'userfile1' }, { name: 'userfile2' }]),
+  function (req, res) {
+    console.log(req.files); // { userfile1: [{}], userfile2: [{}] }
+    console.log(req.body); // { title1: 'aaa', title2: 'bbb' }
+    res.send('Upload Multiple Each!!!');
+  }
+);
+
 app.listen(PORT, function (req, res) {
   console.log(`http://localhost:${PORT}`);
 });
