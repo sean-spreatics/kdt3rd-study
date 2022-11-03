@@ -33,7 +33,7 @@ CREATE TABLE user (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(10) NOT NULL,
     age INT NOT NULL,
-    address VARCHAR(100) NOT NULL DEFAULT '기본 주소',
+    address VARCHAR(100) NOT NULL DEFAULT '기본 주소'
 );
 
 -- 2. 테이블 목록 확인
