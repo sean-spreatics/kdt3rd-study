@@ -5,7 +5,6 @@ const PORT = 8000;
 // multer 설정
 const multer = require('multer');
 const path = require('path');
-const { runInNewContext } = require('vm');
 const upload = multer({
   dest: 'uploads/',
 });
