@@ -5,10 +5,11 @@ const PORT = 8000;
 // multer 설정
 const multer = require('multer');
 const path = require('path');
+const { runInNewContext } = require('vm');
 const upload = multer({
   dest: 'uploads/',
 });
-const uploadDeatil = multer({
+const uploadDetail = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
       // req: 요청에 대한 정보
@@ -33,8 +34,9 @@ const uploadDeatil = multer({
       // 현재시간: 파일명이 겹치는 것을 막기 위함
     },
   }),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  // limits: { fileSize: 5 * 1024 * 1024 },
 });
+app.use('/uploads', express.static(__dirname + '/uploads')); // upload 폴더 접근 가능하게끔
 
 app.set('view engine', 'ejs');
 app.use('/views', express.static(__dirname + '/views'));
@@ -49,7 +51,7 @@ app.get('/', function (req, res) {
 // single()의 인자: input 태그의 name 값
 // single() -> req.file 객체에 파일 정보
 // app.post('/upload', upload.single('userfile'), function (req, res) {
-app.post('/upload', uploadDeatil.single('userfile'), function (req, res) {
+app.post('/upload', uploadDetail.single('userfile'), function (req, res) {
   // req.file: 파일 업로드 성공 결과 (파일 정보)
   //   {
   //     fieldname: 'userfile', // 폼에 정의된 name
@@ -72,7 +74,7 @@ app.post('/upload', uploadDeatil.single('userfile'), function (req, res) {
 
 // 2. array(): 여러 파일을 하나의 input에 업로드할 때
 // array() -> req.files 객체에 파일 정보
-app.post('/upload/array', uploadDeatil.array('userfiles'), function (req, res) {
+app.post('/upload/array', uploadDetail.array('userfiles'), function (req, res) {
   console.log(req.files); // [ {}, {}, {}, {} ] 형식으로 파일 정보 확인
   console.log(req.body); // [Object: null prototype] { title: '과일들...' }
   res.send('Uploaded Multiple!!!');
@@ -81,11 +83,21 @@ app.post('/upload/array', uploadDeatil.array('userfiles'), function (req, res) {
 // 3. fields(): 여러 파일을 각각의 input에 업로드할 때
 app.post(
   '/upload/fields',
-  uploadDeatil.fields([{ name: 'userfile1' }, { name: 'userfile2' }]),
+  uploadDetail.fields([{ name: 'userfile1' }, { name: 'userfile2' }]),
   function (req, res) {
     console.log(req.files); // { userfile1: [{}], userfile2: [{}] }
     console.log(req.body); // { title1: 'aaa', title2: 'bbb' }
     res.send('Upload Multiple Each!!!');
+  }
+);
+
+// 4. 동적 파일 업로드
+app.post(
+  '/dynamicFile',
+  uploadDetail.single('dynamicFile'),
+  function (req, res) {
+    console.log(req.file);
+    res.send(req.file);
   }
 );
 
