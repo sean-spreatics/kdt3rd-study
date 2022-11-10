@@ -25,7 +25,8 @@ DESC visitor;
 
 -- DML
 -- 테이블 전체 데이터 조회 (read)
-SELECT * FROM visitor;
+SELECT * FROM visitor; -- all
+SELECT * FROM visitor WHERE id=1; -- one
 
 -- 데이블 데이터 추가 (create)
 INSERT INTO visitor (name, comment) VALUES("홍길동", "내가 왔다.");
@@ -35,6 +36,10 @@ INSERT INTO visitor (name, comment) VALUES("아이유", "양야야");
 
 -- 테이블 데이터 삭제 (delete)
 DELETE FROM visitor WHERE id > 2;
+
+-- 테이블 데이터 수정 (update)
+UPDATE visitor SET name='누구', comment='아무말' WHERE id=1;
+
 
 -- DCL
 -- mysql 사용자 추가 (user계정)

@@ -27,6 +27,17 @@ exports.getVisitors = (callback) => {
   });
 };
 
+exports.getVisitor = (id, callback) => {
+  conn.query(`SELECT * FROM visitor WHERE id=${id}`, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log('Visitor.js', rows); // [ {} ]
+    callback(rows[0]);
+  });
+};
+
 exports.postVisitor = (data, callback) => {
   // data: 사용자가 폼에 입력한 정보
   // { name: '빅파이', comment: '맛있다' }
@@ -40,6 +51,20 @@ exports.postVisitor = (data, callback) => {
 
       console.log('Visitor.js', rows);
       callback(rows.insertId); // pk (id)
+    }
+  );
+};
+
+exports.patchVisitor = (data, callback) => {
+  conn.query(
+    `UPDATE visitor SET name='${data.name}', comment='${data.comment}' WHERE id=${data.id}`,
+    (err, rows) => {
+      if (err) {
+        throw err;
+      }
+
+      console.log('Visitor.js', rows);
+      callback(true); // true: 수정 성공을 의미
     }
   );
 };
