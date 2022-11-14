@@ -31,14 +31,29 @@ exports.post_signup = (req, res) => {
 };
 
 exports.post_signin = (req, res) => {
-  User.post_signin(req.body, (result) => {
-    console.log('Controller post_signin: ', result);
+  // User.post_signin(req.body, (result) => {
+  //   console.log('Controller post_signin: ', result);
 
-    if (result.length > 0) {
-      // 유저 조회 o -> 로그인 성공 -> [ {} ]
+  //   if (result.length > 0) {
+  //     // 유저 조회 o -> 로그인 성공 -> [ {} ]
+  //     res.send(true);
+  //   } else {
+  //     // 유저 조회 x -> 로그인 실패 -> []
+  //     res.send(false);
+  //   }
+  // });
+
+  // SELECT * FROM user WHERE userid='${data.userid}' and pw='${data.pw}' LIMIT 1
+  models.User.findOne({
+    where: {
+      userid: req.body.userid,
+      pw: req.body.pw,
+    },
+  }).then((result) => {
+    console.log('**** result >> ', result);
+    if (result) {
       res.send(true);
     } else {
-      // 유저 조회 x -> 로그인 실패 -> []
       res.send(false);
     }
   });
@@ -58,20 +73,46 @@ exports.post_profile = (req, res) => {
 
   // SELECT * FROM user WHERE userid='${req.body.userid}' LIMIT 1
   models.User.findOne({
-    where: { id: req.body.userid },
+    where: { userid: req.body.userid },
   }).then((result) => {
-    console.log(result); // [ {} ] ->
+    console.log('&&&& result >> ', result);
+    // [ {} ] -> {}
+
+    if (result) {
+      res.render('profile', { data: result });
+    }
   });
 };
 
 exports.edit_profile = (req, res) => {
-  User.edit_profile(req.body, () => {
+  // User.edit_profile(req.body, () => {
+  //   res.send('회원정보 수정 성공!');
+  // });
+
+  // UPDATE user SET userid='${data.userid}', name='${data.name}', pw='${data.pw}' WHERE id='${data.id}'
+  models.User.update(
+    {
+      userid: req.body.uesrid,
+      name: req.body.name,
+      pw: req.body.pw,
+    },
+    {
+      where: { id: req.body.id },
+    }
+  ).then(() => {
     res.send('회원정보 수정 성공!');
   });
 };
 
 exports.delete_profile = (req, res) => {
-  User.delete_profile(req.body.id, () => {
-    res.send('회원 탈퇴 성공');
+  // User.delete_profile(req.body.id, () => {
+  //   res.send('회원 탈퇴 성공');
+  // });
+
+  // DELETE FROM user WHERE id=${id}
+  models.User.destroy({
+    where: { id: req.body.id },
+  }).then(() => {
+    res.send('회원 탈퇴 완료!!');
   });
 };
