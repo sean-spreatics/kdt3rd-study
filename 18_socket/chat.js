@@ -14,6 +14,12 @@ app.get('/', (req, res) => {
 
 const nickArray = {}; // 유저 목록
 
+// [실습46] DM 기능 구현
+// 유저 목록 업데이트 (유저 입장, 퇴장)
+function updateList() {
+  io.emit('updateNicks', nickArray); // { socket.id: nick1, socket.id: nick2, ... }
+}
+
 // io.on()
 // : socket과 관련된 통신작업을 처리
 io.on('connection', (socket) => {
@@ -44,6 +50,7 @@ io.on('connection', (socket) => {
       console.log('접속 유저 목록 >> ', nickArray);
       io.emit('notice', `${nick}님이 입장하셨습니다.`);
       socket.emit('entrySuccess', nick);
+      updateList(); // 유저목록 업데이트
     }
   });
 
@@ -57,15 +64,28 @@ io.on('connection', (socket) => {
     //  ex. aa님이 퇴장하셨습니다.
     // 3. nickArray에서 해당 유저 삭제 (객체에서 key-value 쌍 삭제)
     // delete 연산자 활용
+    delete nickArray[socket.id];
+
+    updateList(); // 유저목록 업데이트
   });
 
   // [실습45] 채팅창 메세지 전송 Step1
   socket.on('send', (data) => {
-    console.log('socket on send >> ', data); //  { myNick: 'a', msg: 'cc' }
+    console.log('socket on send >> ', data); //  { myNick: 'a', dm: 'all | 특정닉네임', msg: 'cc' }
+    // 전체; socket on send >>  { myNick: 'x', dm: 'all', msg: 'dd' }
+    // 특정유저; socket on send >>  { myNick: 'zz', dm: '1q50EKrp0sOCwbh7AAAD', msg: 'aaa' }
 
-    // [실습45] 채팅창 메세지 전송 Step2
-    const sendData = { nick: data.myNick, msg: data.msg };
-    io.emit('newMessage', sendData);
+    if (data.dm !== 'all') {
+      // [실습46] DM 기능
+      let dmSocketId = data.dm; // 특정 유저의 socket id
+      const sendData = { nick: data.myNick, msg: data.msg, dm: '(속닥속닥) ' };
+      io.to(dmSocketId).emit('newMessage', sendData); // 특정 소켓아이디에게만 DM 메세지 전송
+      socket.emit('newMessage', sendData); // 자기 자신에게도 DM 메세지 전송
+    } else {
+      // [실습45] 채팅창 메세지 전송 Step2
+      const sendData = { nick: data.myNick, msg: data.msg };
+      io.emit('newMessage', sendData);
+    }
   });
 });
 
