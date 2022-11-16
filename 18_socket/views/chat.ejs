@@ -180,11 +180,6 @@
         divChat.textContent += `${data.nick} : ${data.msg}`; // <div>(속닥속닥) nick : msg</div>
         div.append(divChat);
         chatList.append(div);
-
-        console.log(
-          '********* >> ',
-          document.querySelector('#chat-list').lastChild.children[0]
-        );
       });
 
       // [실습46] DM 기능 추가
