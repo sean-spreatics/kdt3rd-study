@@ -36,6 +36,11 @@ SELECT * FROM customer;
 -- ON UPDATE CASCADE: 기준 테이블의 데이터가 변경되면 참조 테이블의 데이터도 변경됨
 -- ON DELETE CASCADE: 기준 테이블의 데이터가 삭제되면 참조 테이블의 데이터도 삭제됨
 
+
+-- 회원 테이블 (기본 키 테이블) -> (2) 나중 삭제  
+-- 구매 테이블 (왜래 키 테이블) -> (1) 먼저 삭제  
+
+
 -- 주문목록(orderlist) 테이블 생성
 DROP TABLE orderlist;
 CREATE TABLE orderlist (
