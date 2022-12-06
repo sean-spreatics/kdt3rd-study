@@ -1,10 +1,10 @@
 import './App.css';
-import PostList from './PostList';
+import Prob57 from './Prob57';
 
 function App() {
   return (
     <div className="App">
-      <PostList />
+      <Prob57 />
     </div>
   );
 }
